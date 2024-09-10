@@ -1027,7 +1027,9 @@ function! ale#completion#HandleUserData(completed_item) abort
         endfor
     endif
 
-    silent doautocmd <nomodeline> User ALECompletePost
+    if exists('#User#ALEWantResults')
+        silent doautocmd <nomodeline> User ALECompletePost
+    endif
 endfunction
 
 function! ale#completion#Done() abort

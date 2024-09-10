@@ -324,7 +324,9 @@ function! ale#lsp_linter#OnInit(linter, details, Callback) abort
     " Tell the relevant buffer that the LSP has started via an autocmd.
     if l:buffer > 0
         if l:buffer == bufnr('')
-            silent doautocmd <nomodeline> User ALELSPStarted
+            if exists('#User#ALEWantResults')
+                silent doautocmd <nomodeline> User ALELSPStarted
+            endif
         else
             execute 'augroup ALELSPStartedGroup' . l:buffer
                 autocmd!

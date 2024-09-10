@@ -118,7 +118,9 @@ function! s:Lint(buffer, should_lint_file, timer_id) abort
 
     " Tell other sources that they can start checking the buffer now.
     let g:ale_want_results_buffer = a:buffer
-    silent doautocmd <nomodeline> User ALEWantResults
+    if exists('#User#ALEWantResults')
+        silent doautocmd <nomodeline> User ALEWantResults
+    endif
     unlet! g:ale_want_results_buffer
 
     " Don't set up buffer data and so on if there are no linters to run.

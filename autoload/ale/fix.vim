@@ -46,7 +46,9 @@ function! ale#fix#ApplyQueuedFixes(buffer) abort
         let l:should_lint = l:data.changes_made
     endif
 
-    silent doautocmd <nomodeline> User ALEFixPost
+    if exists('#User#ALEWantResults')
+        silent doautocmd <nomodeline> User ALEFixPost
+    endif
 
     " If ALE linting is enabled, check for problems with the file again after
     " fixing problems.
@@ -380,7 +382,9 @@ function! ale#fix#Fix(buffer, fixing_flag, ...) abort
     call ale#command#RemoveManagedFiles(a:buffer)
     call ale#fix#InitBufferData(a:buffer, a:fixing_flag)
 
-    silent doautocmd <nomodeline> User ALEFixPre
+    if exists('#User#ALEWantResults')
+        silent doautocmd <nomodeline> User ALEFixPre
+    endif
 
     call s:RunFixer({
     \   'buffer': a:buffer,

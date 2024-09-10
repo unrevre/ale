@@ -240,7 +240,9 @@ function! ale#engine#SetResults(buffer, loclist) abort
         call ale#command#RemoveManagedFiles(a:buffer)
 
         " Call user autocommands. This allows users to hook into ALE's lint cycle.
-        silent doautocmd <nomodeline> User ALELintPost
+        if exists('#User#ALEWantResults')
+            silent doautocmd <nomodeline> User ALELintPost
+        endif
     endif
 endfunction
 
@@ -470,7 +472,9 @@ function! s:RunJob(command, options) abort
 
     call ale#engine#MarkLinterActive(l:info, l:linter)
 
-    silent doautocmd <nomodeline> User ALEJobStarted
+    if exists('#User#ALEWantResults')
+        silent doautocmd <nomodeline> User ALEJobStarted
+    endif
 
     return 1
 endfunction
@@ -677,7 +681,9 @@ function! s:RunLinters(
     " We can only clear the results if we aren't checking the buffer.
     let l:can_clear_results = !ale#engine#IsCheckingBuffer(a:buffer)
 
-    silent doautocmd <nomodeline> User ALELintPre
+    if exists('#User#ALEWantResults')
+        silent doautocmd <nomodeline> User ALELintPre
+    endif
 
     for [l:lint_file, l:linter] in a:slots
         " Only run lint_file linters if we should.
